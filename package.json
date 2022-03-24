@@ -1,0 +1,30 @@
+{
+  "name": "jvma-nosql-social-network-api",
+  "version": "1.0.0",
+  "description": "API for a social network web application to share thoughts, react to friends' thoughts and create a friends list.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "seed": "node utils/seed.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josevidmal/jvma-nosql-social-network-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/josevidmal/jvma-nosql-social-network-api/issues"
+  },
+  "homepage": "https://github.com/josevidmal/jvma-nosql-social-network-api#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
