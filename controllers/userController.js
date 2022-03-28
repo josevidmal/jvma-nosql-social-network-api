@@ -46,4 +46,38 @@ module.exports = {
             .then(() => res.json({ message: 'The User and Thoughts were deleted' }))
             .catch((err) => res.status(500).json(err));
     },
+    addFriend(req, res) {
+        User.findOne({ _id: req.params.friendId })
+            .then((friend) => {
+                return User.findOneAndUpdate(
+                    { _id: req.params.userId },
+                    { $addToSet: { friends: friend._id } },
+                    { new: true }
+                );
+            })
+            .then((user) => 
+                !user
+                    ? res.status(404).json({ message: 'There is no user with that ID' })
+                    : res.json('Friend added to user')
+            )
+            .catch((err) => res.status(500).json(err));
+    },
+    deleteFriend(req, res) {
+        User.findOneAndRemove({ _id: req.params.friendId })
+            .then((friend) => 
+                !friend
+                    ? res.status(404).json({ message: 'There is no friend with that ID' })
+                    : User.findOneAndUpdate(
+                        { friends: req.params.friendId },
+                        { $pull: { friends: req.params.friendId } },
+                        {new: true }
+                    )
+            )
+            .then((user) => 
+                !user
+                    ? res.status(404).json({ message: 'The friend was deleted, but no user was found' })
+                    : res.json({ message: 'The friend was deleted' })
+            )
+            .catch((err) => res.status(500).json(err));
+    },
 };
