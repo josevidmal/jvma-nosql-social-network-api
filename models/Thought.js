@@ -13,13 +13,13 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: date => formatDate(date), // create format function in helpers.js
+            get: date => formatDate(date),
         }, 
         username: { 
             type: String, 
             required: true, 
         },
-        reactions: [reactionSchema], // array of nested documents created with reactionShema
+        reactions: [reactionSchema],
     },
     {
         toJSON: {
