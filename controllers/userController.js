@@ -3,6 +3,9 @@ const { User, Thought } = require('../models/index');
 module.exports = {
     getUsers(req, res) {
         User.find()
+            .populate('thoughts', '-__v')
+            .populate('friends', '-__v')
+            .select('-__v')
             .then((users) => res.json(users))
             .catch((err) => res.status(500).json(err));
     },
@@ -58,12 +61,12 @@ module.exports = {
             .then((user) => 
                 !user
                     ? res.status(404).json({ message: 'There is no user with that ID' })
-                    : res.json('Friend added to user')
+                    : res.json(user)
             )
             .catch((err) => res.status(500).json(err));
     },
     deleteFriend(req, res) {
-        User.findOneAndRemove({ _id: req.params.friendId })
+        User.findOne({ _id: req.params.friendId })
             .then((friend) => 
                 !friend
                     ? res.status(404).json({ message: 'There is no friend with that ID' })
@@ -76,7 +79,7 @@ module.exports = {
             .then((user) => 
                 !user
                     ? res.status(404).json({ message: 'The friend was deleted, but no user was found' })
-                    : res.json({ message: 'The friend was deleted' })
+                    : res.json(user)
             )
             .catch((err) => res.status(500).json(err));
     },

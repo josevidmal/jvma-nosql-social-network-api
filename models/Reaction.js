@@ -11,6 +11,7 @@ const reactionSchema = new Schema(
             type: String,
             required: true,
             maxlength: 280,
+            minlenght: 1,
         },
         username: {
             type: String,
@@ -22,6 +23,12 @@ const reactionSchema = new Schema(
             get: (date) => formatDate(date),
         },
     },
+    {
+        toJSON: {
+            getters: true,
+        },
+        id: false,
+    }
 );
 
 module.exports = reactionSchema;

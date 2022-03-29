@@ -3,15 +3,18 @@ const { User, Thought } = require('../models/index');
 module.exports = {
     getThoughts(req, res) {
         Thought.find()
+            .populate('reactions', '-__v')
+            .select('-__v')
             .then((thoughts) => res.json(thoughts))
             .catch((err) => res.status(500).json(err));
     },
     getSingleThought(req, res) {
         Thought.findOne({ _id: req.params.thoughtId })
+            .populate('reactions', '-__v')
             .select('-__v')
-            .then((thought) => 
+            .then((thought) =>
                 !thought
-                    ? res.status(404).json({ message: 'No thought found with that ID'})
+                    ? res.status(404).json({ message: 'No thought found with that ID' })
                     : res.json(thought)
             )
             .catch((err) => res.status(500).json(err));
@@ -25,10 +28,10 @@ module.exports = {
                     { new: true }
                 );
             })
-            .then((user) => 
+            .then((user) =>
                 !user
                     ? res.status(404).json({ message: 'The Thought was created but there was no user with that ID' })
-                    : res.json('Thought was created')
+                    : res.json(user)
             )
             .catch((err) => res.status(500).json(err));
     },
@@ -38,7 +41,7 @@ module.exports = {
             { $set: req.body },
             { runValidators: true, new: true }
         )
-            .then((thought) => 
+            .then((thought) =>
                 !thought
                     ? res.status(404).json({ message: 'There is no thought with that ID' })
                     : res.json(thought)
@@ -47,7 +50,7 @@ module.exports = {
     },
     deleteThought(req, res) {
         Thought.findOneAndRemove({ _id: req.params.thoughtId })
-            .then((thought) => 
+            .then((thought) =>
                 !thought
                     ? res.status(404).json({ message: 'There is no thought with that ID' })
                     : User.findOneAndUpdate(
@@ -56,10 +59,36 @@ module.exports = {
                         { new: true }
                     )
             )
-            .then((user) => 
+            .then((user) =>
                 !user
                     ? res.status(404).json({ message: 'The thought was deleted, but no user was found' })
-                    : res.json({ message: 'The thought was deleted' })
+                    : res.json(user)
+            )
+            .catch((err) => res.status(500).json(err));
+    },
+    createReaction(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $addToSet: { reactions: req.body } },
+            { runValidators: true, new: true }
+        )
+            .then((thought) => 
+                !thought
+                    ? res.status(404).json({ message: 'There is no thought with that ID' })
+                    : res.json(thought)
+            )
+            .catch((err) => res.status(500).json(err));
+    },
+    deleteReaction(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $pull: { reactions: { reactionId: req.params.reactionId } } },
+            { runValidatiors: true, new: true }
+        )
+            .then((thought) => 
+                !thought
+                    ? res.status(404).json({ message: 'There is no thought with that ID' })
+                    : res.json(thought)
             )
             .catch((err) => res.status(500).json(err));
     },
