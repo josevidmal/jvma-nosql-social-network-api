@@ -13,9 +13,9 @@ Then, I proceeded with the code for the userController and thoughtController. In
 
 Finally, I defined the API routes in userRoutes.js and thoughtRoutes.js. First, I imported all the functions from userController.js to userRoutes.js, then I set `router.route('/')` with GET to get all users and POST to create a user, `router.route('/:userId')` with GET to get a user by Id, PUT to update a user and DELETE to delete a user, and `router.route('/:userId/friends/:friendId')` with POST to add a friend to a user's friends list and DELETE to remove a friend. Following up, I imported all the functions from thoughtController.js to thoughtRoutes.js, after this I set `router.route('/')` with GET to get all thoughts and POST to create a thought, `router.route('/:thoughtId')` with GET to get a thought by Id, PUT to update a thought and DELETE to delete a thought, `router.route('/:thoughtId/reactions')` with POST to create a reaction, and `router.route('/:thoughtId/reactions/:reactionId')` with DELETE to remove a reaction from the reactions array of a thought.   
 
-## Usage & [Walkthrough Video]()
+## Usage & [Walkthrough Video](https://drive.google.com/file/d/1OHdMh3Cfosf2mO7zPkqBerpgZ21a444V/view?usp=sharing)
 
-To see the application in use watch this [Walkthrough Video]()
+To see the application in use watch this [Walkthrough Video](https://drive.google.com/file/d/1OHdMh3Cfosf2mO7zPkqBerpgZ21a444V/view?usp=sharing)
 
 The application looks like this:
 
